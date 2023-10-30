@@ -93,17 +93,15 @@ export const ObtenerInfoDocente = async (req, res) => {
 export const DocentesMateria = async (req, res) => {
   try {
     const token = req.headers.authorization;
-    console.log("token "+ token)
     const decodedToken = jwt.verify(token, 'Centenito');
     const { NumeroPersonal } = decodedToken;
-    console.log("NoPErsonal: " +NumeroPersonal)
     const client = await pool.connect();
     const result = await client.query(querys.VerMateriaDocente, [
-      NumeroPersonal,
-    ]);
-    console.log("result: " +result)
-    const nrcs = result.rows.map((row) => row.nrc);
-    console.log("nrcs: " +nrcs)
+      NumeroPersonal]);
+    console.log("result: ",result)
+    const nrcs = result.rows.map((row) => row.ncr_materia);
+
+    console.log("nrcs: ",nrcs)
     res.json({ nrcs });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -149,6 +147,7 @@ export const encontrarMateriaDocente = async (req, res) => {
     );
     //almacenar en una variable la información necesaria de la petición anterior
     const responseData = result.map((res) => res.rows[0]);
+    console.log('Dataaa: '+responseData[0])
     console.log(responseData)
    //se retorna la información filtrada al front
     res.send(responseData);
