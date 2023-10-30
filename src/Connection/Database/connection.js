@@ -7,7 +7,7 @@ const pool = new Pool({
   password: '24042002',
   host: 'localhost',
   port: 5432,
-  database: 'sistema',
+  database: 'SIAEFINAL',
   connectionConfig: {
     charset: 'UTF8'
   },

@@ -1,7 +1,6 @@
 import { Router } from "express";
 import {
   AltaCuentaDocente,
-  enviarCorreo,
   EliminarUsuarioTodo,
   generarToken,
   DocentesMateria,
@@ -17,8 +16,6 @@ const router = Router();
 router.get("/", function (req, res) {
   console.log("Conectado")
 });
-
-router.post("/Servidor/enviar", enviarCorreo);
 
 router.post("/Servidor/RegistrarUsuarios", AltaCuentaDocente);
 

@@ -20,43 +20,6 @@ export const obtenerRegistros = async (req, res) => {
   }
 };
 
-export const enviarCorreo = async (req, res) => {
-  try {
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: 'Irving.CondeM@Gmail.com',
-        pass: 'bswntwhqwrxnfvba',
-      },
-    });
-
-    const { numero, nrc } = req.body;
-
-    const message = {
-      from: 'Irving.CondeM@Gmail.com',
-      to: 'Irving.Conde117@Gmail.com',
-      subject: 'Se solicita un alta de materia',
-      text: `
-        Docente: ${numero}
-        Materia: ${nrc}
-      `,
-    };
-
-    transporter.sendMail(message, function (error, info) {
-      if (error) {
-        console.log(error);
-        res.send("Error al enviar el correo electrónico");
-      } else {
-        console.log("Correo electrónico enviado: " + info.response);
-        res.send("Correo electrónico enviado correctamente");
-      }
-    });
-  } catch (error) {
-    res.status(500);
-    res.send(error.message);
-  }
-};
-
 export const EliminarUsuarioTodo = async (req, res) => {
   try {
     const client = await pool.connect();
@@ -110,6 +73,7 @@ export const ObtenerInfoDocente = async (req, res) => {
   try {
     const token = req.headers.authorization;
     const decodedToken = jwt.verify(token, 'Centenito');
+ 
     const { NumeroPersonal } = decodedToken;
 
     const client = await pool.connect();
@@ -117,10 +81,10 @@ export const ObtenerInfoDocente = async (req, res) => {
       NumeroPersonal,
     ]);
 
-    const { nombres, apellidos, numero_personal, facultad, url_imagen } =
+    const { nombre, no_personal, facultad, url_imagen } =
       result.rows[0];
 
-    res.json({ nombres, apellidos, numero_personal, facultad, url_imagen });
+    res.json({ nombre, no_personal, facultad, url_imagen });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -129,15 +93,17 @@ export const ObtenerInfoDocente = async (req, res) => {
 export const DocentesMateria = async (req, res) => {
   try {
     const token = req.headers.authorization;
+    console.log("token "+ token)
     const decodedToken = jwt.verify(token, 'Centenito');
     const { NumeroPersonal } = decodedToken;
-
+    console.log("NoPErsonal: " +NumeroPersonal)
     const client = await pool.connect();
     const result = await client.query(querys.VerMateriaDocente, [
       NumeroPersonal,
     ]);
+    console.log("result: " +result)
     const nrcs = result.rows.map((row) => row.nrc);
-
+    console.log("nrcs: " +nrcs)
     res.json({ nrcs });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -160,6 +126,7 @@ export const Traer = async (req, res) => {
 
 //Este controlador recibe todos los NRC correspondientes al docente y devolverá la información de cada nrc
 export const encontrarMateriaDocente = async (req, res) => {
+  console.log("inicia "+res)
   //recibir token de la petición y guardarlo en una nueva variable
   const token = req.headers.authorization;
   //decifrar el token con la contraseña definida
@@ -182,6 +149,7 @@ export const encontrarMateriaDocente = async (req, res) => {
     );
     //almacenar en una variable la información necesaria de la petición anterior
     const responseData = result.map((res) => res.rows[0]);
+    console.log(responseData)
    //se retorna la información filtrada al front
     res.send(responseData);
   } catch (error) {
@@ -204,7 +172,6 @@ export const IniciarSesion = async (req, res) => {
   try {
     const {Correo, Contraseña} = req.body;
 
-    console.log(Correo, Contraseña)
     console.log(req.body)
 
     const result = await pool.query(querys.verificarCuenta, [
@@ -213,10 +180,11 @@ export const IniciarSesion = async (req, res) => {
     ]);
 
     if (result.rows.length === 1) {
-      const { numero_personal } = result.rows[0];
-      const token = jwt.sign(
-        { NumeroPersonal: numero_personal }, 'Centenito');
+      const { no_personal } = result.rows[0];
+      console.log( no_personal )
 
+      const token = jwt.sign(
+        { NumeroPersonal: no_personal }, 'Centenito');
       res.json({ token });
     } else {
       res.status(401).json({ message: "Credenciales inválidas" });
