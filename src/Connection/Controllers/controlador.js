@@ -135,6 +135,20 @@ export const materiaSalon = async(req, res) => {
 }
 }
 
+export const materiaSalonHorario = async(req, res) => {
+  const {horario, dia} = req.body;
+  try {
+    const result = await pool.query(querys.MateriaHorario, [
+      horario,
+      dia,
+    ]);
+    res.send(result.rows)
+} catch (error) {
+  res.status(500);
+  res.send(error.message);
+}
+}
+
 //Este controlador recibe todos los NRC correspondientes al docente y devolverá la información de cada nrc
 export const encontrarMateriaDocente = async (req, res) => {
   //recibir token de la petición y guardarlo en una nueva variable
