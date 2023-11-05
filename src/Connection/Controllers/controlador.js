@@ -98,10 +98,8 @@ export const DocentesMateria = async (req, res) => {
     const client = await pool.connect();
     const result = await client.query(querys.VerMateriaDocente, [
       NumeroPersonal]);
-    console.log("result: ",result)
     const nrcs = result.rows.map((row) => row.ncr_materia);
 
-    console.log("nrcs: ",nrcs)
     res.json({ nrcs });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -122,9 +120,23 @@ export const Traer = async (req, res) => {
   }
 };
 
+export const materiaSalon = async(req, res) => {
+  const token = req.headers.authorization;
+  const decodedToken = jwt.verify(token, 'Centenito');
+  const { Valor } = decodedToken;
+  let nrc = parseInt(Valor.valor, 10);
+  try {
+    let result = await pool.query(querys.InfoMaterias,[nrc])
+
+    res.send(result.rows)
+} catch (error) {
+  res.status(500);
+  res.send(error.message);
+}
+}
+
 //Este controlador recibe todos los NRC correspondientes al docente y devolverá la información de cada nrc
 export const encontrarMateriaDocente = async (req, res) => {
-  console.log("inicia "+res)
   //recibir token de la petición y guardarlo en una nueva variable
   const token = req.headers.authorization;
   //decifrar el token con la contraseña definida
@@ -147,7 +159,7 @@ export const encontrarMateriaDocente = async (req, res) => {
     );
     //almacenar en una variable la información necesaria de la petición anterior
     const responseData = result.map((res) => res.rows[0]);
-    console.log('Dataaa: '+responseData[0])
+
     console.log(responseData)
    //se retorna la información filtrada al front
     res.send(responseData);
@@ -170,9 +182,6 @@ export const generarToken = async (req, res) => {
 export const IniciarSesion = async (req, res) => {
   try {
     const {Correo, Contraseña} = req.body;
-
-    console.log(req.body)
-
     const result = await pool.query(querys.verificarCuenta, [
       Correo,
       Contraseña,
@@ -180,8 +189,6 @@ export const IniciarSesion = async (req, res) => {
 
     if (result.rows.length === 1) {
       const { no_personal } = result.rows[0];
-      console.log( no_personal )
-
       const token = jwt.sign(
         { NumeroPersonal: no_personal }, 'Centenito');
       res.json({ token });

@@ -9,6 +9,7 @@ import {
   ObtenerInfoDocente,
   IniciarSesion,
   Traer,
+  materiaSalon,
 } from "../Controllers/controlador.js";
 
 const router = Router();
@@ -30,5 +31,7 @@ router.get("/Servidor/Materias", encontrarMateriaDocente);
 router.get("/Servidor/ObtenerDocente", ObtenerInfoDocente);
 
 router.post("/Servidor/GenerarToken", generarToken);
+
+router.post("/Servidor/MateriaSalon",materiaSalon);
 
 export default router;
