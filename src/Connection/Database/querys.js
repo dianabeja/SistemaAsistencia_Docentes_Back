@@ -11,5 +11,5 @@ export const querys = {
   DocenteExistencia: "SELECT COUNT(no_personal) FROM docentes WHERE no_personal = $1;",
   NumeroAlumnosMAteria: "SELECT COUNT(*) as numero_de_alumnos FROM public.alumno_materias WHERE ncr_materias = $1 GROUP BY ncr_materias;",
   InfoMaterias: "SELECT * FROM materia_salon WHERE nrc = $1;",
-  MateriaHorario: "SELECT nrc FROM materia_salon WHERE (lunes = $1 AND 'Lunes' = $2)  OR (martes = $1 AND 'Martes' = $2) OR (miercoles = $1 AND 'Miércoles' = $2)  OR (jueves = $1 AND 'Jueves' = $2)  OR (viernes = $1 AND 'Viernes' = $2);"
+  MateriaHorario: "SELECT nrc, salon, edificio FROM materia_salon WHERE (lunes = $1 AND 'Lunes' = $2)  OR (martes = $1 AND 'Martes' = $2) OR (miercoles = $1 AND 'Miércoles' = $2)  OR (jueves = $1 AND 'Jueves' = $2)  OR (viernes = $1 AND 'Viernes' = $2);"
     }

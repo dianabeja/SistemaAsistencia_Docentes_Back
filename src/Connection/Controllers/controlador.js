@@ -135,19 +135,22 @@ export const materiaSalon = async(req, res) => {
 }
 }
 
-export const materiaSalonHorario = async(req, res) => {
-  const {horario, dia} = req.body;
+export const materiaSalonHorario = async (req, res) => {
+  const { horario, dia } = req.body;
   try {
     const result = await pool.query(querys.MateriaHorario, [
       horario,
       dia,
     ]);
-    res.send(result.rows)
-} catch (error) {
-  res.status(500);
-  res.send(error.message);
+    const nrcs = result.rows.map(row => row); 
+    console.log(nrcs);
+    res.send(nrcs);
+  } catch (error) {
+    res.status(500);
+    res.send(error.message);
+  }
 }
-}
+
 
 //Este controlador recibe todos los NRC correspondientes al docente y devolverá la información de cada nrc
 export const encontrarMateriaDocente = async (req, res) => {

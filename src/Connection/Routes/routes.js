@@ -35,7 +35,7 @@ router.post("/Servidor/GenerarToken", generarToken);
 
 router.post("/Servidor/MateriaSalon",materiaSalon);
 
-router.get("/Servidor/MateriaHorario",materiaSalonHorario);
+router.post("/Servidor/MateriaHorario",materiaSalonHorario);
 
 
 export default router;
