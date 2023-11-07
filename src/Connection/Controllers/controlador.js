@@ -143,7 +143,11 @@ export const materiaSalonHorario = async (req, res) => {
       dia,
     ]);
     const nrcs = result.rows.map(row => row); 
-    console.log(nrcs);
+
+    const resultM = await pool.query(querys.ObtenerMateria(nrcs.nrc));
+    console.log(resultM);
+    nrcs.licenciatura = resultM;
+    
     res.send(nrcs);
   } catch (error) {
     res.status(500);
