@@ -138,25 +138,29 @@ export const materiaSalon = async(req, res) => {
 export const materiaSalonHorario = async (req, res) => {
   const { horario, dia } = req.body;
   try {
-    
     const result = await pool.query(querys.MateriaHorario, [
       horario,
       dia,
     ]);
-
-    let nrcs = result.rows.map(row => row); 
-
-    let nueva_Informacion_Materia = await encontrarMateria(nrcs[0].nrc)
-
-    nueva_Informacion_Materia.nrc = nrcs[0].nrc;
-    nueva_Informacion_Materia.salon = nrcs[0].salon;
-    nueva_Informacion_Materia.edificio = nrcs[0].edificio;
-
-    res.send(nueva_Informacion_Materia);
+  
+    const nrcs = result.rows;
+  
+    const informacionMaterias = [];
+  
+    for (const nrc of nrcs) {
+      const nuevaInformacionMateria = await encontrarMateria(nrc.nrc);
+      nuevaInformacionMateria.nrc = nrc.nrc;
+      nuevaInformacionMateria.salon = nrc.salon;
+      nuevaInformacionMateria.edificio = nrc.edificio;
+      informacionMaterias.push(nuevaInformacionMateria);
+    }
+  
+    res.send(informacionMaterias);
   } catch (error) {
     res.status(500);
     res.send(error.message);
   }
+  
 }
 
 async function encontrarMateria(nrc) {
