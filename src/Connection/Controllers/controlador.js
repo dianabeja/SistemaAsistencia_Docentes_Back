@@ -215,4 +215,18 @@ export const IniciarSesion = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
+
+
 };
+
+export const obtenerAlumno = async (req, res) => {
+  const { matricula } = req.headers;
+
+  try {
+    const result = await pool.query(querys.ObtenerInfoAlumnos, [matricula]);
+    res.send(result.rows);
+  } catch (error) {
+    res.status(500);
+    res.send(error.message);
+    }
+  }
