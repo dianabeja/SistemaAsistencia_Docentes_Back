@@ -31,7 +31,6 @@ router.get("/Servidor/VerMateriaDocente", DocentesMateria);
 router.get("/Servidor/Materias", encontrarMateriaDocente);
 
 router.get("/Servidor/ObtenerDocente", ObtenerInfoDocente);
-
 router.post("/Servidor/GenerarToken", generarToken);
 
 router.post("/Servidor/MateriaSalon",materiaSalon);
