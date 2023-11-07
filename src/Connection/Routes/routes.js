@@ -32,7 +32,6 @@ router.get("/Servidor/Materias", encontrarMateriaDocente);
 
 router.get("/Servidor/ObtenerDocente", ObtenerInfoDocente);
 router.post("/Servidor/GenerarToken", generarToken);
-
 router.post("/Servidor/MateriaSalon",materiaSalon);
 
 router.post("/Servidor/MateriaHorario",materiaSalonHorario);
