@@ -38,7 +38,7 @@ router.post("/Servidor/MateriaSalon",materiaSalon);
 
 router.post("/Servidor/MateriaHorario",materiaSalonHorario);
 
-router.post("/Servidor/ObtenerAlumno",obtenerAlumno);
+router.get("/Servidor/ObtenerAlumno",obtenerAlumno);
 
 
 
