@@ -14,7 +14,6 @@ const pool = new Pool({
   connectionConfig: {
     charset: 'UTF8'
   },
-  //user: 'postgres',
   //host: 'localhost',
   //database: 'SIAEFINAL',
   //password: '24042002',
