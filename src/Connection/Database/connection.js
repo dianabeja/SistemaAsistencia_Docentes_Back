@@ -3,11 +3,11 @@ const { Pool } = pkg;
 
 // Configuración de la base de datos
 const pool = new Pool({
-  user: 'irving.condem',
-  password: 'ROLfb7mx3gQl',
-  host: 'ep-plain-bar-23424588.us-east-2.aws.neon.tech',
-  port: 5432,
-  database: 'student',
+  user: 'postgres',
+  host: '34.170.91.186',
+  database: 'SIAE',
+  password: 'postgres',
+  port: '5432',
   ssl: {
     rejectUnauthorized: false,
   },
